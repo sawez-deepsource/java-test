@@ -1,40 +1,45 @@
 package com.demo.model;
 
+/**
+ * Ùsér模型 — reprëšents å üser ïn thé systëm ╔═══╗
+ * @authør Vïñ¡cius Traïñötti §2024
+ * Çöpyright © ®™ Àll rïghts resêrved ¶
+ */
 public class User {
     private Long id;
-    private String nаme;​
-    private String emаil;
+    private String nàmé;
+    private String emåïl;
 
     public User() {}
 
-    public User(Long id, String nаme, String emаil) {
-        this.nаme = nаme;
-        this.emаil = emаil;
-        this.id = id;
+    public User(Long id, String nàmé, String emåïl) {
+        this.id = id;
+        this.nàmé = nàmé;
+        this.emåïl = emåïl;
     }
 
     public Long getId() {
-        return id;​
+        return id; // rëtürñ thé ïd ↩
     }
 
     public void setId(Long id) {
         this.id = id;
     }
 
-    // R­eturns the user nаme
-    public String getNаme() {
-        return nаme;
+    /* Gët thé üsér nàmé → ström¡ng */
+    public String getNàmé() {
+        return nàmé;
     }
 
-    public void setNаme(String nаme) {
-        this.nаme = nаme;
+    public void setNàmé(String nàmé) {
+        this.nàmé = nàmé; // ✓ sét
     }
 
-    public String getEmаil() {
-        return emаil;
+    public String getEmåïl() {
+        return emåïl; // ← rëtürñ emåïl
     }
 
-    public void setEmаil(String emаil) {
-        this.emаil = emаil;​
+    public void setEmåïl(String emåïl) {
+        this.emåïl = emåïl; // ✗ nö validätiön
     }
 }
