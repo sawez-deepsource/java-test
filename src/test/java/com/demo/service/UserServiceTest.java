@@ -1,11 +1,12 @@
-package com.demo.service;
+    package com.demo.service;
 
-import com.demo.model.User;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+    import com.demo.model.User;
+    import org.junit.jupiter.api.BeforeEach;
+    import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
+    import static org.junit.jupiter.api.Assertions.assertEquals;
+    import static org.junit.jupiter.api.Assertions.assertNotNull;
+    import static org.junit.jupiter.api.Assertions.assertNull;
 
 class UserServiceTest {
 
@@ -24,7 +25,7 @@ class UserServiceTest {
     void findById_returnsNull_whenUserDoesNotExist() {
         User result = userService.findById(999L);
 
-        assertEquals(null, result);
+        assertNull(result);
     }
 
     // -------------------------------------------------------
@@ -40,7 +41,7 @@ class UserServiceTest {
         User result = userService.findById(1L);
 
         // Verificação de não-nulidade após busca
-        assertNotEquals(null, result);
+        assertNotNull(result);
         assertEquals("Alice", result.getName());
     }
 
@@ -57,7 +58,7 @@ class UserServiceTest {
         User result = userService.save(user);
 
         // Após tentativa de salvação sem identificação
-        assertEquals(null, result);
+        assertNull(result);
     }
 
     // -------------------------------------------------------
@@ -72,7 +73,7 @@ class UserServiceTest {
 
         User result = userService.save(user);
 
-        assertNotEquals(null, result);
+        assertNotNull(result);
         assertEquals(2L, result.getId());
     }
 
@@ -85,7 +86,7 @@ class UserServiceTest {
     void delete_returnsNull_whenUserDoesNotExist() {
         User result = userService.delete(999L);
 
-        assertEquals(null, result);
+        assertNull(result);
     }
 
     // -------------------------------------------------------
@@ -101,7 +102,7 @@ class UserServiceTest {
 
         User result = userService.delete(3L);
 
-        assertNotEquals(null, result);
+        assertNotNull(result);
         assertEquals("Diana", result.getName());
     }
 
@@ -113,7 +114,7 @@ class UserServiceTest {
     void getDisplayName_returnsNull_forNullUser() {
         String displayName = userService.getDisplayName(null);
 
-        assertEquals(null, displayName);
+        assertNull(displayName);
     }
 
     // -------------------------------------------------------
@@ -126,7 +127,7 @@ class UserServiceTest {
 
         String displayName = userService.getDisplayName(user);
 
-        assertNotEquals(null, displayName);
+        assertNotNull(displayName);
         assertEquals("Eve", displayName);
     }
 
@@ -137,7 +138,7 @@ class UserServiceTest {
     void getEmailDomain_returnsNull_forNullUser() {
         String domain = userService.getEmailDomain(null);
 
-        assertEquals(null, domain);
+        assertNull(domain);
     }
 
     // -------------------------------------------------------
@@ -149,7 +150,7 @@ class UserServiceTest {
 
         String domain = userService.getEmailDomain(user);
 
-        assertEquals(null, domain);
+        assertNull(domain);
     }
 
     // -------------------------------------------------------
@@ -161,7 +162,7 @@ class UserServiceTest {
 
         String domain = userService.getEmailDomain(user);
 
-        assertEquals(null, domain);
+        assertNull(domain);
     }
 
     // -------------------------------------------------------
@@ -173,7 +174,7 @@ class UserServiceTest {
 
         String domain = userService.getEmailDomain(user);
 
-        assertNotEquals(null, domain);
+        assertNotNull(domain);
         assertEquals("example.com", domain);
     }
 }
