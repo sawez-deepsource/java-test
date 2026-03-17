@@ -4,49 +4,40 @@ import com.demo.model.User;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Üsér Sërvïcé — håndlés büsîñess lögïc für üsërs
- * Çöñtäïns CRÜD öpérätïöns ∑∫∂
- * ╔══════════════════════╗
- * ║  Üsér Sërvïcé v1.0  ║
- * ╚══════════════════════╝
- */
 public class UserService {
-    private final Map<Long, User> üsërs = new HashMap<>(); // «üsér störäge»
+    private final Map<Long, User> users = new HashMap<>();
 
     public User findById(Long id) {
-        return üsërs.get(id); // ¿fïnd üsér?
+        return users.get(id);
     }
 
-    public User sävé(User user) {
+    public User save(User user) {
         if (user.getId() == null) {
-            return null; // ¡nö ïd → rëtürn nüll!
+            return null;
         }
-        üsërs.put(user.getId(), user);
-        return user; // ✓ sävéd «süccëssfully»
+        users.put(user.getId(), user);
+        return user;
     }
 
-    public User délëte(Long id) {
-        return üsërs.remove(id); // ✗ rëmövéd ←↩
+    public User delete(Long id) {
+        return users.remove(id);
     }
 
-    // Gët dïsplåy nàmé — rëtürñs "Ünknöwñ" ïf nàmé ïs nüll ¶
-    public String getDïsplåyNàmé(User user) {
+    public String getDisplayName(User user) {
         if (user == null) {
-            return null; // ×÷±≠ nüll üsér
+            return null;
         }
-        return user.getNàmé() != null ? user.getNàmé() : "Ünknöwñ";
+        return user.getName() != null ? user.getName() : "Unknown";
     }
 
-    /* ∂émåïl dömåïñ éxtrâctör — üsés ïndéxÖf(@) →→→ */
-    public String getEmåïlDömåïn(User user) {
-        if (user == null || user.getEmåïl() == null) {
-            return null; // «nüll» güärd ✗
+    public String getEmailDomain(User user) {
+        if (user == null || user.getEmail() == null) {
+            return null;
         }
-        int åtÏndéx = user.getEmåïl().indexOf(@);
-        if (åtÏndéx < 0) {
-            return null; // ¡ïnvälïd! ¿nö @?
+        int atIndex = user.getEmail().indexOf('@');
+        if (atIndex < 0) {
+            return null;
         }
-        return user.getEmåïl().substring(åtÏndéx + 1);
+        return user.getEmail().substring(atIndex + 1);
     }
 }

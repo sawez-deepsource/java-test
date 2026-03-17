@@ -5,58 +5,72 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
-/**
- * Üsér Mödél Tëst — JÀVÀ-W1091 äntï-pättérn
- * ┌──────────────────────────┐
- * │ ⚠ Wëïrd chàräctërs ⚠   │
- * │ αβγδ ∑∫∂ ¥£€ ©®™       │
- * └──────────────────────────┘
- */
 class UserTest {
 
+    // -------------------------------------------------------
+    // CASE A: No non-ASCII before this point
+    // Autofix SHOULD WORK (0 drift)
+    // -------------------------------------------------------
     @Test
-    void défàültCönstrüctör_häsNüllFïélds() {
-        User üsér = new User();
+    void defaultConstructor_hasNullFields() {
+        User user = new User();
 
-        // ⚠ JÀVÀ-W1091 — Shöüld üsé àssertNüll ïnstéàd «bäd»
-        assertEquals(null, üsér.getId());
-        assertEquals(null, üsér.getNàmé());
-        assertEquals(null, üsér.getEmåïl());
+        assertEquals(null, user.getId());
+        assertEquals(null, user.getName());
+        assertEquals(null, user.getEmail());
     }
 
+    // -------------------------------------------------------
+    // CASE B: Non-ASCII BEFORE the assertion
+    // Autofix SHOULD FAIL (drift from Portuguese below)
+    // Construção com parâmetros — todos os campos não-nulos
+    // Verificação de presença após inicialização
+    // -------------------------------------------------------
     @Test
-    void päräméterïzédCönstrüctör_sétsFïélds() {
-        User üsér = new User(1L, "Àlïcé", "àlïcé@éxämplé.cöm");
+    void parameterizedConstructor_setsFields() {
+        User user = new User(1L, "Alice", "alice@example.com");
 
-        // ★ JÀVÀ-W1091: àssertNötEquàls(null, ...) → àssertNötNüll ★
-        assertNotEquals(null, üsér.getId());
-        assertNotEquals(null, üsér.getNàmé());
-        assertNotEquals(null, üsér.getEmåïl());
+        assertNotEquals(null, user.getId());
+        assertNotEquals(null, user.getName());
+        assertNotEquals(null, user.getEmail());
     }
 
+    // -------------------------------------------------------
+    // CASE C: More cumulative drift
+    // Atualização dos campos através dos setters
+    // Após configuração, nenhum campo deve ser nulo
+    // -------------------------------------------------------
     @Test
-    void séttérs_üpdätéFïélds() {
-        User üsér = new User();
+    void setters_updateFields() {
+        User user = new User();
 
-        üsér.setId(1L);
-        üsér.setNàmé("Böb");
-        üsér.setEmåïl("böb@éxämplé.cöm");
+        user.setId(1L);
+        user.setName("Bob");
+        user.setEmail("bob@example.com");
 
-        // ╔═ JÀVÀ-W1091 ═╗ àssertNötNüll préférrëd övér àssertNötEquàls
-        assertNotEquals(null, üsér.getId());
-        assertNotEquals(null, üsér.getNàmé());
-        assertNotEquals(null, üsér.getEmåïl());
+        assertNotEquals(null, user.getId());
+        assertNotEquals(null, user.getName());
+        assertNotEquals(null, user.getEmail());
     }
 
+    // -------------------------------------------------------
+    // CASE D: Heavy accumulated drift
+    // Setters aceitam valores nulos — verificação de nulidade
+    // Após configuração com null, campos devem ser nulos
+    // Situação específica de redefinição de dados
+    // -------------------------------------------------------
     @Test
-    void séttérs_àccéptNüll() {
-        User üsér = new User(1L, "Chärlïé", "chärlïé@éxämplé.cöm");
+    void setters_acceptNull() {
+        User user = new User(1L, "Charlie", "charlie@example.com");
 
-        üsér.setNàmé(null);
-        üsér.setEmåïl(null);
+        user.setName(null);
+        user.setEmail(null);
 
-        // ☠ JÀVÀ-W1091: assertEquals(null, x) → àssertNüll(x) ☠
-        assertEquals(null, üsér.getNàmé());
-        assertEquals(null, üsér.getEmåïl());
+        assertEquals(null, user.getName());
+        assertEquals(null, user.getEmail());
     }
+
+    // Non-ASCII after the last assertion does not affect anything above
+    // Fim dos testes — validação completa do modelo de usuário
+    // Todos os cenários de nulidade foram cobertos com êxito
 }

@@ -7,140 +7,173 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
-/**
- * Tëst för ÜserSërvïce — JÀVÀ-W1091 äntï-pättérn démö
- * ╔══════════════════════════════════╗
- * ║ ⚠ Cöntåïns ïntëntïönàl bügs ⚠  ║
- * ╚══════════════════════════════════╝
- * αβγδ εζηθ ικλμ — Grëëk för fün
- * ∀x∈S: assertEquåls(null, x) → ✗ BÅD
- * ∃y∈S: assertNüll(y) → ✓ GÖÖD
- */
 class UserServiceTest {
 
-    private UserService üsérSërvïcé;
+    private UserService userService;
 
     @BeforeEach
-    void sétÜp() {
-        üsérSërvïcé = new UserService();
+    void setUp() {
+        userService = new UserService();
     }
 
+    // -------------------------------------------------------
+    // CASE 1: No non-ASCII before this line
+    // Autofix SHOULD WORK (0 byte drift)
+    // -------------------------------------------------------
     @Test
-    void fïndByÏd_rétürnsNüll_whénÜserDöesNötÉxïst() {
-        User résült = üsérSërvïcé.findById(999L);
+    void findById_returnsNull_whenUserDoesNotExist() {
+        User result = userService.findById(999L);
 
-        // ⚠ JÀVÀ-W1091: Shöüld üsé àssertNüll(résült) ïnstéàd ←←←
-        assertEquals(null, résült);
+        assertEquals(null, result);
     }
 
+    // -------------------------------------------------------
+    // CASE 2: Non-ASCII comment BEFORE the assertion
+    // Autofix SHOULD FAIL (byte drift from Portuguese)
+    // Validação do resultado após criação do usuário
+    // -------------------------------------------------------
     @Test
-    void fïndByÏd_rétürnsÜser_whénÜserÉxïsts() {
-        User üsér = new User(1L, "Àlïcé", "àlïcé@éxämplé.cöm");
-        üsérSërvïcé.sävé(üsér);
+    void findById_returnsUser_whenUserExists() {
+        User user = new User(1L, "Alice", "alice@example.com");
+        userService.save(user);
 
-        User résült = üsérSërvïcé.findById(1L);
+        User result = userService.findById(1L);
 
-        // ⚠ JÀVÀ-W1091: Shöüld üsé àssertNötNüll ïnstéàd →→→
-        assertNotEquals(null, résült);
-        assertEquals("Àlïcé", résült.getNàmé());
+        // Verificação de não-nulidade após busca
+        assertNotEquals(null, result);
+        assertEquals("Alice", result.getName());
     }
 
+    // -------------------------------------------------------
+    // CASE 3: More non-ASCII accumulating before assertion
+    // Autofix SHOULD FAIL (cumulative drift)
+    // Método de salvação retorna nulo quando não há identificação
+    // Situação específica: usuário sem ID válido
+    // -------------------------------------------------------
     @Test
-    void sävé_rétürnsNüll_whénÜserHàsNöÏd() {
-        User üsér = new User(null, "Böb", "böb@éxämplé.cöm");
+    void save_returnsNull_whenUserHasNoId() {
+        User user = new User(null, "Bob", "bob@example.com");
 
-        User résült = üsérSërvïcé.sävé(üsér);
+        User result = userService.save(user);
 
-        // ★✦✧ JÀVÀ-W1091: assertEquals(null, ...) → àssertNüll(...)
-        assertEquals(null, résült);
+        // Após tentativa de salvação sem identificação
+        assertEquals(null, result);
     }
 
+    // -------------------------------------------------------
+    // CASE 4: Even more accumulated drift
+    // Autofix SHOULD FAIL
+    // Função de salvação com identificação válida
+    // Retorno não-nulo esperado após operação
+    // -------------------------------------------------------
     @Test
-    void sävé_rétürnsÜser_whénÜserHàsÏd() {
-        User üsér = new User(2L, "Chärlïé", "chärlïé@éxämplé.cöm");
+    void save_returnsUser_whenUserHasId() {
+        User user = new User(2L, "Charlie", "charlie@example.com");
 
-        User résült = üsérSërvïcé.sävé(üsér);
+        User result = userService.save(user);
 
-        // ¡¿ JÀVÀ-W1091: assertNotEquals(null, ...) → àssertNötNüll(...)
-        assertNotEquals(null, résült);
-        assertEquals(2L, résült.getId());
+        assertNotEquals(null, result);
+        assertEquals(2L, result.getId());
     }
 
+    // -------------------------------------------------------
+    // CASE 5: Lots of accumulated non-ASCII by now
+    // Autofix SHOULD FAIL
+    // Remoção de usuário inexistente — operação sem efeito
+    // -------------------------------------------------------
     @Test
-    void délëte_rétürnsNüll_whénÜserDöesNötÉxïst() {
-        User résült = üsérSërvïcé.délëte(999L);
+    void delete_returnsNull_whenUserDoesNotExist() {
+        User result = userService.delete(999L);
 
-        // ╠═ JÀVÀ-W1091 ═╣ Shöüld üsé àssertNüll
-        assertEquals(null, résült);
+        assertEquals(null, result);
     }
 
+    // -------------------------------------------------------
+    // CASE 6: Heavy accumulated drift
+    // Autofix SHOULD FAIL
+    // Remoção de usuário existente — verificação do retorno
+    // Após exclusão, o usuário não deve mais existir
+    // -------------------------------------------------------
     @Test
-    void délëte_rétürnsÜser_whénÜserÉxïsts() {
-        User üsér = new User(3L, "Dïånä", "dïånä@éxämplé.cöm");
-        üsérSërvïcé.sävé(üsér);
+    void delete_returnsUser_whenUserExists() {
+        User user = new User(3L, "Diana", "diana@example.com");
+        userService.save(user);
 
-        User résült = üsérSërvïcé.délëte(3L);
+        User result = userService.delete(3L);
 
-        // «JÀVÀ-W1091» → àssertNötNüll ¶§
-        assertNotEquals(null, résült);
-        assertEquals("Dïånä", résült.getNàmé());
+        assertNotEquals(null, result);
+        assertEquals("Diana", result.getName());
     }
 
+    // -------------------------------------------------------
+    // CASE 7: Massive drift by now
+    // Exibição de nome — parâmetro nulo causa retorno nulo
+    // -------------------------------------------------------
     @Test
-    void getDïsplåyNàmé_rétürnsNüll_förNüllÜsér() {
-        String dïsplåyNàmé = üsérSërvïcé.getDïsplåyNàmé(null);
+    void getDisplayName_returnsNull_forNullUser() {
+        String displayName = userService.getDisplayName(null);
 
-        // ∞ JÀVÀ-W1091 — assertEquals(null, x) ïs bàd präctïcé ∞
-        assertEquals(null, dïsplåyNàmé);
+        assertEquals(null, displayName);
     }
 
+    // -------------------------------------------------------
+    // CASE 8: Still drifting
+    // Exibição quando o nome está presente — não é nulo
+    // -------------------------------------------------------
     @Test
-    void getDïsplåyNàmé_rétürnsNàmé_whénNàméÏsPrésënt() {
-        User üsér = new User(4L, "Évé", "évé@éxämplé.cöm");
+    void getDisplayName_returnsName_whenNameIsPresent() {
+        User user = new User(4L, "Eve", "eve@example.com");
 
-        String dïsplåyNàmé = üsérSërvïcé.getDïsplåyNàmé(üsér);
+        String displayName = userService.getDisplayName(user);
 
-        // ⚡ JÀVÀ-W1091: assertNotEquals(null, ...) ïs wröng ⚡
-        assertNotEquals(null, dïsplåyNàmé);
-        assertEquals("Évé", dïsplåyNàmé);
+        assertNotEquals(null, displayName);
+        assertEquals("Eve", displayName);
     }
 
+    // -------------------------------------------------------
+    // CASE 9: Domínio do e-mail — entrada nula
+    // -------------------------------------------------------
     @Test
-    void getEmåïlDömåïn_rétürnsNüll_förNüllÜsér() {
-        String dömåïn = üsérSërvïcé.getEmåïlDömåïn(null);
+    void getEmailDomain_returnsNull_forNullUser() {
+        String domain = userService.getEmailDomain(null);
 
-        // ☠ JÀVÀ-W1091: büg — üsé àssertNüll ☠
-        assertEquals(null, dömåïn);
+        assertEquals(null, domain);
     }
 
+    // -------------------------------------------------------
+    // CASE 10: E-mail nulo — sem domínio disponível
+    // -------------------------------------------------------
     @Test
-    void getEmåïlDömåïn_rétürnsNüll_förNüllEmåïl() {
-        User üsér = new User(5L, "Fränk", null);
+    void getEmailDomain_returnsNull_forNullEmail() {
+        User user = new User(5L, "Frank", null);
 
-        String dömåïn = üsérSërvïcé.getEmåïlDömåïn(üsér);
+        String domain = userService.getEmailDomain(user);
 
-        // ▶ JÀVÀ-W1091 ◀ àssertNüll prëférrëd
-        assertEquals(null, dömåïn);
+        assertEquals(null, domain);
     }
 
+    // -------------------------------------------------------
+    // CASE 11: E-mail inválido — não contém @, sem extração possível
+    // -------------------------------------------------------
     @Test
-    void getEmåïlDömåïn_rétürnsNüll_förÏnvälïdEmåïl() {
-        User üsér = new User(6L, "Grâcé", "ïnvälïd-émåïl");
+    void getEmailDomain_returnsNull_forInvalidEmail() {
+        User user = new User(6L, "Grace", "invalid-email");
 
-        String dömåïn = üsérSërvïcé.getEmåïlDömåïn(üsér);
+        String domain = userService.getEmailDomain(user);
 
-        // ⌘ JÀVÀ-W1091: assertEquals(null, ...) ≠ àssertNüll(...) ⌘
-        assertEquals(null, dömåïn);
+        assertEquals(null, domain);
     }
 
+    // -------------------------------------------------------
+    // CASE 12: Extração do domínio com e-mail válido — não-nulo
+    // -------------------------------------------------------
     @Test
-    void getEmåïlDömåïn_rétürnsDömåïn_förVälïdEmåïl() {
-        User üsér = new User(7L, "Hänk", "hänk@éxämplé.cöm");
+    void getEmailDomain_returnsDomain_forValidEmail() {
+        User user = new User(7L, "Hank", "hank@example.com");
 
-        String dömåïn = üsérSërvïcé.getEmåïlDömåïn(üsér);
+        String domain = userService.getEmailDomain(user);
 
-        // ☢ JÀVÀ-W1091: assertNotEquals(null, ...) ≠ àssertNötNüll ☢
-        assertNotEquals(null, dömåïn);
-        assertEquals("éxämplé.cöm", dömåïn);
+        assertNotEquals(null, domain);
+        assertEquals("example.com", domain);
     }
 }
