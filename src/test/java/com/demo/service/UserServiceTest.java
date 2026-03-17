@@ -5,6 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 class UserServiceTest {
@@ -21,7 +22,7 @@ class UserServiceTest {
         User result = userService.findById(999L);
 
         // JAVA-W1091: Should use assertNull(result) instead
-        assertEquals(null, result);
+        assertNull(result);
     }
 
     @Test
@@ -32,7 +33,7 @@ class UserServiceTest {
         User result = userService.findById(1L);
 
         // JAVA-W1091: Should use assertNotNull(result) instead
-        assertNotEquals(null, result);
+        assertNotNull(result);
         assertEquals("Alice", result.getName());
     }
 
@@ -43,7 +44,7 @@ class UserServiceTest {
         User result = userService.save(user);
 
         // JAVA-W1091: Should use assertNull(result) instead
-        assertEquals(null, result);
+        assertNull(result);
     }
 
     @Test
@@ -53,7 +54,7 @@ class UserServiceTest {
         User result = userService.save(user);
 
         // JAVA-W1091: Should use assertNotNull(result) instead
-        assertNotEquals(null, result);
+        assertNotNull(result);
         assertEquals(2L, result.getId());
     }
 
@@ -62,7 +63,7 @@ class UserServiceTest {
         User result = userService.delete(999L);
 
         // JAVA-W1091: Should use assertNull(result) instead
-        assertEquals(null, result);
+        assertNull(result);
     }
 
     @Test
@@ -73,7 +74,7 @@ class UserServiceTest {
         User result = userService.delete(3L);
 
         // JAVA-W1091: Should use assertNotNull(result) instead
-        assertNotEquals(null, result);
+        assertNotNull(result);
         assertEquals("Diana", result.getName());
     }
 
@@ -82,7 +83,7 @@ class UserServiceTest {
         String displayName = userService.getDisplayName(null);
 
         // JAVA-W1091: Should use assertNull(displayName) instead
-        assertEquals(null, displayName);
+        assertNull(displayName);
     }
 
     @Test
@@ -92,7 +93,7 @@ class UserServiceTest {
         String displayName = userService.getDisplayName(user);
 
         // JAVA-W1091: Should use assertNotNull(displayName) instead
-        assertNotEquals(null, displayName);
+        assertNotNull(displayName);
         assertEquals("Eve", displayName);
     }
 
@@ -101,7 +102,7 @@ class UserServiceTest {
         String domain = userService.getEmailDomain(null);
 
         // JAVA-W1091: Should use assertNull(domain) instead
-        assertEquals(null, domain);
+        assertNull(domain);
     }
 
     @Test
@@ -111,7 +112,7 @@ class UserServiceTest {
         String domain = userService.getEmailDomain(user);
 
         // JAVA-W1091: Should use assertNull(domain) instead
-        assertEquals(null, domain);
+        assertNull(domain);
     }
 
     @Test
@@ -121,7 +122,7 @@ class UserServiceTest {
         String domain = userService.getEmailDomain(user);
 
         // JAVA-W1091: Should use assertNull(domain) instead
-        assertEquals(null, domain);
+        assertNull(domain);
     }
 
     @Test
@@ -131,7 +132,7 @@ class UserServiceTest {
         String domain = userService.getEmailDomain(user);
 
         // JAVA-W1091: Should use assertNotNull(domain) instead
-        assertNotEquals(null, domain);
+        assertNotNull(domain);
         assertEquals("example.com", domain);
     }
 }
