@@ -4,6 +4,8 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class UserTest {
 
@@ -15,9 +17,9 @@ class UserTest {
     void defaultConstructor_hasNullFields() {
         User user = new User();
 
-        assertEquals(null, user.getId());
-        assertEquals(null, user.getName());
-        assertEquals(null, user.getEmail());
+        assertNull(user.getId());
+        assertNull(user.getName());
+        assertNull(user.getEmail());
     }
 
     // -------------------------------------------------------
@@ -30,9 +32,9 @@ class UserTest {
     void parameterizedConstructor_setsFields() {
         User user = new User(1L, "Alice", "alice@example.com");
 
-        assertNotEquals(null, user.getId());
-        assertNotEquals(null, user.getName());
-        assertNotEquals(null, user.getEmail());
+        assertNotNull(user.getId());
+        assertNotNull(user.getName());
+        assertNotNull(user.getEmail());
     }
 
     // -------------------------------------------------------
@@ -48,9 +50,9 @@ class UserTest {
         user.setName("Bob");
         user.setEmail("bob@example.com");
 
-        assertNotEquals(null, user.getId());
-        assertNotEquals(null, user.getName());
-        assertNotEquals(null, user.getEmail());
+        assertNotNull(user.getId());
+        assertNotNull(user.getName());
+        assertNotNull(user.getEmail());
     }
 
     // -------------------------------------------------------
@@ -66,8 +68,8 @@ class UserTest {
         user.setName(null);
         user.setEmail(null);
 
-        assertEquals(null, user.getName());
-        assertEquals(null, user.getEmail());
+        assertNull(user.getName());
+        assertNull(user.getEmail());
     }
 
     // Non-ASCII after the last assertion does not affect anything above
